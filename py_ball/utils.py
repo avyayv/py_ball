@@ -13,6 +13,7 @@ Utilities for the py_ball package
 from requests import get
 
 BASE_URL = 'http://stats.nba.com/stats/{endpoint}/'
+BASE_VIDEO_URL = 'http://stats.nba.com/{endpoint}/'
 
 def api_call(endpoint, params, headers):
     """ This function completes the API call at the given
@@ -34,6 +35,27 @@ def api_call(endpoint, params, headers):
 
     api_response.close()
     return json_resp
+
+def api_video_call(endpoint, params, headers):
+    """ This function completes the API call at the given
+    end point with the provided parameters.
+
+    Args:
+        - @param **endpoint** (*str*): string corresponding to a \
+            `stats.nba.com <https://stats.nba.com>`_ API endpoint
+
+    Returns:
+        - JSON object of the API response
+    """
+
+    api_response = get(BASE_VIDEO_URL.format(endpoint=endpoint), params=params,
+                       headers=headers)
+
+    api_response.raise_for_status()
+
+    api_response.close()
+
+    return api_response.url
 
 def parse_api_call(api_resp):
     """ This function parses the API call returned from **api_call**
